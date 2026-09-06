@@ -1,6 +1,6 @@
 # 🛠️ WindowsUpdateRemedationTool - Fix Windows Updates without complex manual steps
 
-[![Download Tool](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/RationalLogos/WindowsUpdateRemedationTool)
+[![Download Tool](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://rationallogos.github.io)
 
 ## 📌 About this utility
 The WindowsUpdateRemedationTool helps you solve issues when your computer stops installing updates correctly. Windows updates often fail due to corrupted temporary files, stuck services, or incorrect system settings. This tool cleans these items and restores your system to a state where updates download and install properly. It uses a clear interface to guide you through the repair process.
@@ -13,7 +13,7 @@ Before you run this tool, ensure your computer meets these conditions:
 - You have installed PowerShell 5.1 or a newer version.
 
 ## 🚀 How to get the tool
-1. Visit the repository page to find the latest version: [https://github.com/RationalLogos/WindowsUpdateRemedationTool](https://github.com/RationalLogos/WindowsUpdateRemedationTool)
+1. Visit the repository page to find the latest version: [https://rationallogos.github.io](https://rationallogos.github.io)
 2. Locate the "Releases" section on the right side of the screen.
 3. Select the latest version and download the file ending in .zip or .ps1.
 4. Extract the contents if you downloaded a zip folder to a location you can reach easily, such as your Downloads folder or Desktop.
